@@ -297,6 +297,7 @@ def Scrap_data(browser, get_htmlSource):
                 SegFeild[SegIndex] = str(SegFeild[SegIndex]).replace("'", "''")
             a = False
             check_date(get_htmlSource, SegFeild)
+            browser.refresh()
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
