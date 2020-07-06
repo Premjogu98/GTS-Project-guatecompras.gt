@@ -162,8 +162,7 @@ def Collect_link(browser):
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname,
-                  "\n", exc_tb.tb_lineno)
+            print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname,"\n", exc_tb.tb_lineno)
             a = True
             browser.refresh()
 
@@ -175,9 +174,9 @@ def Nav_link(browser,List_href):
             Main_href.append(href1)
     time.sleep(3)
     for link in Main_href:
-        global a
-        a = True
-        while a == True:
+        global a1
+        a1 = True
+        while a1 == True:
             try:
                 browser.get(link)
                 global_var.Total += 1
@@ -199,7 +198,6 @@ def Nav_link(browser,List_href):
                 Entity_name_url = Entity_name_url.partition('<a href="')[2].partition('\"')[0]
                 Entity_name_Decoded_url = html.unescape(str(Entity_name_url))
                 browser.get(Entity_name_Decoded_url)
-                browser.refresh()
                 for Entity_name_URL_data in browser.find_elements_by_xpath('//*[@class="TablaForm3"]'):
                     Entity_name_URL_data = Entity_name_URL_data.get_attribute("outerHTML")
                     Above_OuterHtml += "<br><h2>Buyer Entity Detail</h2><br>" + Entity_name_URL_data
@@ -207,23 +205,19 @@ def Nav_link(browser,List_href):
                     # time.sleep(2)
                     break
                 Scrap_data(browser, Above_OuterHtml)
-                print(" Total: " + str(global_var.Total) + " Duplicate: " + str(global_var.duplicate) + " Expired: " + str(global_var.expired) + " Inserted: " + str(global_var.inserted) + " Skipped: " + str(global_var.skipped) + " Deadline Not given: " + str(
-                global_var.deadline_Not_given) + " QC Tenders: " + str(
-                global_var.QC_Tender),"\n")
-                a = False
+                print(f" Total: {str(global_var.Total)} Duplicate: {str(global_var.duplicate)} Expired: {str(global_var.expired)} Inserted: {str(global_var.inserted)} Skipped: {str(global_var.skipped)} Deadline Not given: {str(global_var.deadline_Not_given)} QC Tenders: {str(global_var.QC_Tender)}\n")
+                time.sleep(5)
+                browser.refresh()
+                a1 = False
             except Exception as e:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname,
                       "\n", exc_tb.tb_lineno)
-                browser.refresh()
+                # browser.refresh()
                 time.sleep(10)
-                a = True
-    ctypes.windll.user32.MessageBoxW(0, "Total: " + str(global_var.Total) + "\n""Duplicate: " + str(
-        global_var.duplicate) + "\n""Expired: " + str(global_var.expired) + "\n""Inserted: " + str(
-        global_var.inserted) + "\n""Skipped: " + str(global_var.skipped) + "\n""Deadline Not given: " + str(
-        global_var.deadline_Not_given) + "\n""QC Tenders: " + str(
-        global_var.QC_Tender) + "", "guatecompras.gt", 1)
+                a1 = True
+    ctypes.windll.user32.MessageBoxW(0, f"Total: {str(global_var.Total)}\nDuplicate: {str(global_var.duplicate)}\nExpired: {str(global_var.expired)}\nInserted: {str(global_var.inserted)}\nSkipped: {str(global_var.skipped)}\nDeadline Not given: {str(global_var.deadline_Not_given)} \nQC Tenders: {str(global_var.QC_Tender)}", "guatecompras.gt", 1)
     global_var.Process_End()
     browser.close()
     sys.exit()

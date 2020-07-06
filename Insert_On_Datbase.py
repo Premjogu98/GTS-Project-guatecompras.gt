@@ -70,6 +70,15 @@ def L2L_connection():
             a3 = 0
             connection.close()
 
+def Error_fun(Error,Function_name,SegFeild):
+    mydb_L2L = Local_connection()
+    mycursorL2L = mydb_L2L.cursor()
+    sql1 = "INSERT INTO ErrorLog(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'","''") + "','" + str(Function_name).replace("'","''")+ "','"+str(SegFeild[31])+"')"
+    mycursorL2L.execute(sql1)
+    mydb_L2L.commit()
+    mycursorL2L.close()
+    mydb_L2L.close()
+    return sql1
 
 def check_Duplication(get_htmlSource , SegFeild):
 
@@ -94,15 +103,9 @@ def check_Duplication(get_htmlSource , SegFeild):
             print("Code Reached On check_Duplication")
             return results
         except Exception as e:
-            mydb_L2L = Local_connection()
-            mycursorL2L = mydb_L2L.cursor()
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
-            sql1 = "INSERT INTO ErrorLog(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
-            mycursorL2L.close()
-            mydb_L2L.close()
+            Error_fun(Error,Function_name,SegFeild)
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" , fname ,"\n" , exc_tb.tb_lineno)
@@ -137,15 +140,9 @@ def insert_in_Local(get_htmlSource , SegFeild):
             print("Code Reached On insert_in_Local")
             MyLoop = 1
         except Exception as e:
-            mydb_L2L = L2L_connection()
-            mycursorL2L = mydb_L2L.cursor()
             Function_name :str = sys._getframe().f_code.co_name
             Error : str = str(e)
-            sql1 = "INSERT INTO ErrorLog(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'","") + "','" + str(Function_name).replace("'","")+ "','"+str(SegFeild[31])+"')"
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
-            mycursorL2L.close()
-            mydb_L2L.close()
+            Error_fun(Error,Function_name,SegFeild)
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,fname , "\n" , exc_tb.tb_lineno)
@@ -155,12 +152,13 @@ def insert_in_Local(get_htmlSource , SegFeild):
 
 
 def create_filename(get_htmlSource , SegFeild):
+    basename = "PY076"
+    Current_dateTime = datetime.now().strftime("%Y%m%d%H%M%S%f")
+    Fileid = "".join([basename , Current_dateTime])
     a = 0
     while a == 0:
         try:
-            basename = "PY076"
-            Current_dateTime = datetime.now().strftime("%Y%m%d%H%M%S%f")
-            Fileid = "".join([basename , Current_dateTime])
+            
             File_path = "Z:\\" + Fileid + ".html"
             file1 = open(File_path , "w", encoding='utf-8')
             # string_Translate_Table = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\">" +\
@@ -188,20 +186,12 @@ def create_filename(get_htmlSource , SegFeild):
             print("Code Reached On create_filename")
             return Fileid
         except Exception as e:
-            mydb_L2L = L2L_connection()
-            mycursorL2L = mydb_L2L.cursor()
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
-            sql1 = "INSERT INTO ErrorLog(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'", "") + "','" + str(
-                Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
-            mycursorL2L.close()
-            mydb_L2L.close()
+            Error_fun(Error,Function_name,SegFeild)
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,
-                  fname , "\n" , exc_tb.tb_lineno)
+            print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,fname , "\n" , exc_tb.tb_lineno)
             a = 0
             time.sleep(10)
 
@@ -265,13 +255,7 @@ def insert_L2L(SegFeild , Fileid):
             except Exception as e:
                 Function_name: str = sys._getframe().f_code.co_name
                 Error: str = e
-                sql1 = "INSERT INTO ErrorLog(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-                mydb_L2L = L2L_connection()
-                mycursorL2L = mydb_L2L.cursor()
-                mycursorL2L.execute(sql1)
-                mydb_L2L.commit()
-                mycursorL2L.close()
-                mydb_L2L.close()
+                Error_fun(Error,Function_name,SegFeild)
                 exc_type , exc_obj , exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,fname ,"\n" , exc_tb.tb_lineno)
@@ -294,11 +278,7 @@ def insert_L2L(SegFeild , Fileid):
         except Exception as e:
             Function_name: str = sys._getframe().f_code.co_name
             Error: str = str(e)
-            sql1 = "INSERT INTO ErrorLog(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'" , "") + "','" + str(Function_name).replace("'" , "") + "','" + str(SegFeild[31]) + "')"
-            mycursorL2L.execute(sql1)
-            mydb_L2L.commit()
-            mycursorL2L.close()
-            mydb_L2L.close()
+            Error_fun(Error,Function_name,SegFeild)
             exc_type , exc_obj , exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" ,fname ,"\n" , exc_tb.tb_lineno)

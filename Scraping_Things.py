@@ -243,7 +243,7 @@ def Scrap_data(browser, get_htmlSource):
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "Julio" or Month == "Julio":
+            elif Month == "julio" or Month == "Julio":
                 Bid_submission_date = Bid_submission_date.replace('.Julio.', '.July.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
@@ -297,7 +297,7 @@ def Scrap_data(browser, get_htmlSource):
                 SegFeild[SegIndex] = str(SegFeild[SegIndex]).replace("'", "''")
             a = False
             check_date(get_htmlSource, SegFeild)
-            browser.refresh()
+            # browser.refresh()
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -305,7 +305,7 @@ def Scrap_data(browser, get_htmlSource):
             print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname, "\n",
                   exc_tb.tb_lineno)
             a = True
-            browser.refresh()
+            # browser.refresh()
 
 
 def check_date(get_htmlSource, SegFeild):
