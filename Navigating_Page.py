@@ -13,25 +13,20 @@ app = wx.App()
 
 
 def ChromeDriver():
-    File_Location = open("D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\guatecompras.gt\\Location For Database & Driver.txt", "r")
-    TXT_File_AllText = File_Location.read()
-    Chromedriver = str(TXT_File_AllText).partition("Driver=")[2].partition("\")")[0].strip()
+    # File_Location = open("D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\guatecompras.gt\\Location For Database & Driver.txt", "r")
+    # TXT_File_AllText = File_Location.read()
+    # Chromedriver = str(TXT_File_AllText).partition("Driver=")[2].partition("\")")[0].strip()
     # chrome_options = Options()
     # chrome_options.add_extension('D:\\0 PYTHON EXE SQL CONNECTION & DRIVER PATH\\guatecompras.gt\\Browsec-VPN.crx')  # ADD EXTENSION Browsec-VPN
     # browser = webdriver.Chrome(executable_path=str(Chromedriver),
     #                            chrome_options=chrome_options)
-    browser = webdriver.Chrome(executable_path=str(Chromedriver))
-    browser.get(
-        """https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh?hl=en" ping="/url?sa=t&amp;source=web&amp;rct=j&amp;url=https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh%3Fhl%3Den&amp;ved=2ahUKEwivq8rjlcHmAhVtxzgGHZ-JBMgQFjAAegQIAhAB""")
-    for Add_Extension in browser.find_elements_by_xpath('/html/body/div[4]/div[2]/div/div/div[2]/div[2]/div'):
-        Add_Extension.click()
-        break
-    import wx
-    app = wx.App()
+    # browser = webdriver.Chrome(executable_path=str(Chromedriver))
+    browser = webdriver.Chrome(executable_path=str(f"C:\\chromedriver.exe"))
+    browser.get("""https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh?hl=en" ping="/url?sa=t&amp;source=web&amp;rct=j&amp;url=https://chrome.google.com/webstore/detail/browsec-vpn-free-and-unli/omghfjlpggmjjaagoclmmobgdodcjboh%3Fhl%3Den&amp;ved=2ahUKEwivq8rjlcHmAhVtxzgGHZ-JBMgQFjAAegQIAhAB""")
+
     wx.MessageBox(' -_-  Add Extension and Select Proxy Between 25 SEC -_- ', 'Info', wx.OK | wx.ICON_WARNING)
     time.sleep(25)  # WAIT UNTIL CHANGE THE MANUAL VPN SETTING
     browser.get("https://www.guatecompras.gt/concursos/consultaConAvanz.aspx")
-    browser.set_window_size(1024, 600)
     browser.maximize_window()
     # browser.switch_to.window(browser.window_handles[1])
     # browser.close()
@@ -52,7 +47,7 @@ def ChromeDriver():
         break
     for Fecha in browser.find_elements_by_xpath('//*[@id="MasterGC_ContentBlockHolder_ddlTipoFecha"]/option[1]'):
         Fecha.click()
-        time.sleep(3)
+        time.sleep(8)
         break
 
     From_date = global_var.From_Date.partition("Date (FROM)")[2].partition("00:")[0].strip()
@@ -73,6 +68,7 @@ def ChromeDriver():
         browser.execute_script("arguments[0].value = arguments[1]" , SetFrom_date , str(From_date))
         break
     time.sleep(3)
+
     To_date = global_var.To_Date.partition("Date (TO)")[2].partition("00:")[0].strip()
     To_date = datetime.strptime(To_date , '%Y-%m-%d')
     To_date = To_date.strftime("%d.%B.%Y").lower()
@@ -92,11 +88,11 @@ def ChromeDriver():
     for Search in browser.find_elements_by_xpath('//*[@id="MasterGC_ContentBlockHolder_btnBuscar"]'):
         Search.click()
         break
-    time.sleep(8)
+    time.sleep(13)
     for NO_data_Found in browser.find_elements_by_xpath('//*[@id="MasterGC_ContentBlockHolder_lblMensaje"]'):
         NO_data_Found = NO_data_Found.get_attribute('innerHTML').strip()
         if NO_data_Found == 'No existen concursos, de acuerdo a los parámetros elegidos.':
-            ctypes.windll.user32.MessageBoxW(0, " No Data Found ", "guatecompras.gt", 1)
+            wx.MessageBox(' -_-  No Data Found ', 'guatecompras.gt', wx.OK | wx.ICON_INFORMATION)
         break
 
     Collect_link(browser)
@@ -164,7 +160,6 @@ def Collect_link(browser):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname,"\n", exc_tb.tb_lineno)
             a = True
-            browser.refresh()
 
 
 def Nav_link(browser,List_href):
@@ -173,6 +168,7 @@ def Nav_link(browser,List_href):
         if href1 not in Main_href:  # Remove Duplicate Links From Above List
             Main_href.append(href1)
     time.sleep(3)
+    count = 0
     for link in Main_href:
         global a1
         a1 = True
@@ -181,13 +177,11 @@ def Nav_link(browser,List_href):
                 browser.get(link)
                 global_var.Total += 1
                 Above_OuterHtml = ""
-                for Contest_Detail in browser.find_elements_by_xpath(
-                        '//*[@id="MasterGC_ContentBlockHolder_WUCDetalleConcurso_divDetalleConcurso"]'):
+                for Contest_Detail in browser.find_elements_by_xpath('//*[@id="MasterGC_ContentBlockHolder_WUCDetalleConcurso_divDetalleConcurso"]'):
                     Contest_Detail = Contest_Detail.get_attribute("outerHTML")
                     Above_OuterHtml += Contest_Detail
                     break
-                for Contest_Tab_Detail in browser.find_elements_by_xpath(
-                        '//*[@id="MasterGC_ContentBlockHolder_divContenidoTab"]'):
+                for Contest_Tab_Detail in browser.find_elements_by_xpath('//*[@id="MasterGC_ContentBlockHolder_divContenidoTab"]'):
                     Contest_Tab_Detail = Contest_Tab_Detail.get_attribute("outerHTML")
                     Above_OuterHtml += Contest_Tab_Detail
                     break
@@ -205,20 +199,22 @@ def Nav_link(browser,List_href):
                     # time.sleep(2)
                     break
                 Scrap_data(browser, Above_OuterHtml)
+                count += 1
                 print(f" Total: {str(global_var.Total)} Duplicate: {str(global_var.duplicate)} Expired: {str(global_var.expired)} Inserted: {str(global_var.inserted)} Skipped: {str(global_var.skipped)} Deadline Not given: {str(global_var.deadline_Not_given)} QC Tenders: {str(global_var.QC_Tender)}\n")
                 time.sleep(5)
-                browser.refresh()
+                if count == 20:
+                    count = 0
+                    browser.execute_script("location.reload(true);")
+                    time.sleep(4)
                 a1 = False
             except Exception as e:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname,
                       "\n", exc_tb.tb_lineno)
-                # browser.refresh()
                 time.sleep(10)
                 a1 = True
     ctypes.windll.user32.MessageBoxW(0, f"Total: {str(global_var.Total)}\nDuplicate: {str(global_var.duplicate)}\nExpired: {str(global_var.expired)}\nInserted: {str(global_var.inserted)}\nSkipped: {str(global_var.skipped)}\nDeadline Not given: {str(global_var.deadline_Not_given)} \nQC Tenders: {str(global_var.QC_Tender)}", "guatecompras.gt", 1)
-    global_var.Process_End()
     browser.close()
     sys.exit()
 

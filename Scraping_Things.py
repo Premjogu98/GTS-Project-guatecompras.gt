@@ -4,7 +4,7 @@ import urllib.request
 import urllib.parse
 import sys , os
 import string
-from datetime import datetime
+from datetime import datetime,timedelta
 import global_var
 import requests
 import html
@@ -205,75 +205,75 @@ def Scrap_data(browser, get_htmlSource):
             cleanr = re.compile('<.*?>')
             Bid_submission_date = re.sub(cleanr, '', Bid_submission_date)
             Bid_submission_date = Bid_submission_date.partition("Hora:")[0].strip().replace(' ', '')
-            Month = Bid_submission_date.partition(".")[2].partition(".")[0].strip()
+            Month = Bid_submission_date.partition(".")[2].partition(".")[0].strip().lower()
 
-            if Month == "enero" or Month == "Enero":
+            if Month == "enero":
                 Bid_submission_date = Bid_submission_date.replace('.enero.', '.January.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "febrero" or Month == "Febrero":
+            elif Month == "febrero":
                 Bid_submission_date = Bid_submission_date.replace('.febrero.', '.February.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "marzo" or Month == "Marzo":
+            elif Month == "marzo":
                 Bid_submission_date = Bid_submission_date.replace('.marzo.', '.March.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "abril" or Month == "Abril":
+            elif Month == "abril":
                 Bid_submission_date = Bid_submission_date.replace('.abril.', '.April.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "mayo" or Month == "Mayo":
+            elif Month == "mayo":
                 Bid_submission_date = Bid_submission_date.replace('.mayo.', '.May.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "junio" or Month == "Junio":
+            elif Month == "junio":
                 Bid_submission_date = Bid_submission_date.replace('.junio.', '.June.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "julio" or Month == "Julio":
-                Bid_submission_date = Bid_submission_date.replace('.Julio.', '.July.')
+            elif Month == "julio" :
+                Bid_submission_date = Bid_submission_date.replace('.julio.', '.July.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "agosto" or Month == "Agosto":
+            elif Month == "agosto":
                 Bid_submission_date = Bid_submission_date.replace('.agosto.', '.August.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "septiembre" or Month == "Septiembre":
+            elif Month == "septiembre" :
                 Bid_submission_date = Bid_submission_date.replace('.septiembre.', '.September.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "octubre" or Month == "Octubre":
+            elif Month == "octubre":
                 Bid_submission_date = Bid_submission_date.replace('.octubre.', '.October.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "noviembre" or Month == "Noviembre":
+            elif Month == "noviembre":
                 Bid_submission_date = Bid_submission_date.replace('.noviembre.', '.November.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
                 SegFeild[24] = mydate
 
-            elif Month == "diciembre" or Month == "Diciembre":
+            elif Month == "diciembre":
                 Bid_submission_date = Bid_submission_date.replace('.diciembre.', '.December.')
                 datetime_object = datetime.strptime(Bid_submission_date, '%d.%B.%Y')
                 mydate = datetime_object.strftime("%Y-%m-%d")
@@ -295,9 +295,9 @@ def Scrap_data(browser, get_htmlSource):
                 print(SegFeild[SegIndex])
                 SegFeild[SegIndex] = html.unescape(str(SegFeild[SegIndex]))
                 SegFeild[SegIndex] = str(SegFeild[SegIndex]).replace("'", "''")
-            a = False
+
             check_date(get_htmlSource, SegFeild)
-            # browser.refresh()
+            a = False
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -305,32 +305,27 @@ def Scrap_data(browser, get_htmlSource):
             print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname, "\n",
                   exc_tb.tb_lineno)
             a = True
-            # browser.refresh()
 
 
 def check_date(get_htmlSource, SegFeild):
-    a = 0
-    while a == 0:
-        tender_date = str(SegFeild[24])
-        nowdate = datetime.now()
-        date2 = nowdate.strftime("%Y-%m-%d")
-        try:
-            if tender_date != '':
-                deadline = time.strptime(tender_date , "%Y-%m-%d")
-                currentdate = time.strptime(date2 , "%Y-%m-%d")
-                if deadline > currentdate:
-                    insert_in_Local(get_htmlSource, SegFeild)
-                    a = 1
-                else:
-                    print("Tender Expired")
-                    global_var.expired += 1
-                    a = 1
+    deadline = str(SegFeild[24])
+    curdate = datetime.now()
+    curdate_str = curdate.strftime("%Y-%m-%d")
+    try:
+        if deadline != '':
+            datetime_object_deadline = datetime.strptime(deadline, '%Y-%m-%d')
+            datetime_object_curdate = datetime.strptime(curdate_str, '%Y-%m-%d')
+            timedelta_obj = datetime_object_deadline - datetime_object_curdate
+            day = timedelta_obj.days
+            if day > 0:
+                insert_in_Local(get_htmlSource, SegFeild)
             else:
-                print("Deadline was not given")
-                global_var.deadline_Not_given += 1
-                a = 1
-        except Exception as e:
-            exc_type , exc_obj , exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" , fname , "\n" , exc_tb.tb_lineno)
-            a = 0
+                print("Expired Tender")
+                global_var.expired += 1
+        else:
+            print("Deadline Not Given")
+            global_var.deadline_Not_given += 1
+    except Exception as e:
+        exc_type , exc_obj , exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" , fname , "\n" ,exc_tb.tb_lineno)
