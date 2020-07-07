@@ -212,6 +212,7 @@ def Nav_link(browser,List_href):
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print("Error ON : ", sys._getframe().f_code.co_name + "--> " + str(e), "\n", exc_type, "\n", fname,
                       "\n", exc_tb.tb_lineno)
+                browser.execute_script("location.reload(true);")
                 time.sleep(10)
                 a1 = True
     ctypes.windll.user32.MessageBoxW(0, f"Total: {str(global_var.Total)}\nDuplicate: {str(global_var.duplicate)}\nExpired: {str(global_var.expired)}\nInserted: {str(global_var.inserted)}\nSkipped: {str(global_var.skipped)}\nDeadline Not given: {str(global_var.deadline_Not_given)} \nQC Tenders: {str(global_var.QC_Tender)}", "guatecompras.gt", 1)

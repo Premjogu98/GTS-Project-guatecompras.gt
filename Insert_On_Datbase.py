@@ -66,7 +66,7 @@ def DB_connection():
 def Error_fun(Error,Function_name,Source_name):
     mydb = DB_connection()
     mycursor = mydb.cursor()
-    sql1 = "INSERT INTO ErrorLog(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'","''") + "','" + str(Function_name).replace("'","''")+ "','"+str(Source_name)+"')"
+    sql1 = "INSERT INTO errorlog_tbl(Error_Message,Function_Name,Exe_Name) VALUES('" + str(Error).replace("'","''") + "','" + str(Function_name).replace("'","''")+ "','"+str(Source_name)+"')"
     mycursor.execute(sql1)
     mydb.commit()
     mycursor.close()
