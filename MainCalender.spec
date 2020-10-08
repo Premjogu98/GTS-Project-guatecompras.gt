@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['MainCalender.py'],
-             pathex=['D:\\PycharmProjects\\guatecompras.gt'],
+             pathex=['F:\\Office Projects\\guatecompras.gt'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -30,4 +30,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=True , icon='D:\\PycharmProjects\\zakup_sk_kz\\pyicon.ico')
+          console=True , icon='F:\\pyicon.ico')

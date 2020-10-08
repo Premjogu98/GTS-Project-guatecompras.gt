@@ -37,7 +37,7 @@ app = wx.App()
 def Scrap_data(browser, get_htmlSource):
 
     SegFeild = []
-    for data in range(42):
+    for data in range(45):
         SegFeild.append('')
     Decoded_get_htmlSource: str = html.unescape(str(get_htmlSource))
     Decoded_get_htmlSource: str = re.sub(' +', ' ', str(Decoded_get_htmlSource)).replace("\n","").replace("<br>","")
@@ -290,12 +290,21 @@ def Scrap_data(browser, get_htmlSource):
             # Source Name
             SegFeild[31] = 'guatecompras.gt'
 
+            SegFeild[20] = ''
+            SegFeild[21] = ''
+            SegFeild[42] = SegFeild[7]
+            SegFeild[43] = ''
             for SegIndex in range(len(SegFeild)):
                 print(SegIndex, end=' ')
                 print(SegFeild[SegIndex])
                 SegFeild[SegIndex] = html.unescape(str(SegFeild[SegIndex]))
                 SegFeild[SegIndex] = str(SegFeild[SegIndex]).replace("'", "''")
+            if len(SegFeild[19]) >= 200:
+                SegFeild[19] = str(SegFeild[19])[:200]+'...'
 
+            if len(SegFeild[18]) >= 1500:
+                SegFeild[18] = str(SegFeild[18])[:1500]+'...'
+                
             check_date(get_htmlSource, SegFeild)
             a = False
 
